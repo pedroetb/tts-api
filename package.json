@@ -1,0 +1,22 @@
+{
+  "name": "text-to-banana-speech",
+  "version": "1.0.0",
+  "description": "Send text to hear it",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Pedro Trujillo",
+  "contributors": [
+    {
+      "name": "Pedro Trujillo",
+      "email": "pedroetb@gmail.com"
+    }
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "express": "^4.14.0",
+    "formidable": "^1.0.17"
+  }
+}
