@@ -12,6 +12,23 @@
 				<div class="col-xs-12">
 				<form action="" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
 					<div class="form-group">
+						<label>Voz</label>
+						<div>
+							<label class="radio-inline">
+								<input type="radio" name="voice" value="google_speech" checked />
+								GoogleSpeech
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="voice" value="festival" />
+								Festival
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="voice" value="espeak" />
+								eSpeak
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
 						<label for="textToSpeech">Texto</label>
 						<textarea id="textToSpeech" type="text" class="form-control" name="textToSpeech"
 							placeholder="Texto"></textarea>
