@@ -1,0 +1,82 @@
+doctype html
+
+html
+	head
+		title TTS-API
+		link(rel='stylesheet', href='/css/bootstrap/bootstrap.min.css')
+		link(rel='stylesheet', href='/css/alertify/alertify.min.css')
+		link(rel='stylesheet', href='/css/alertify/default.min.css')
+		script(src='/js/alertify/alertify.min.js')
+		script(src='/js/form.js')
+
+	body
+		div.container
+			div.row
+				h1 TTS-API
+			div.row
+				div.col-xs-12
+					form
+						div.form-group
+							label Voice
+							div
+								label.radio-inline
+									input(
+										type='radio'
+										name='voice'
+										value='google_speech'
+										checked
+									)
+									span GoogleSpeech
+								label.radio-inline
+									input(
+										type='radio'
+										name='voice'
+										value='festival'
+									)
+									span Festival
+								label.radio-inline
+									input(
+										type='radio'
+										name='voice'
+										value='espeak'
+									)
+									span eSpeak
+						div.form-group
+							label(for='textToSpeech') Text
+							textarea(
+								id='textToSpeech'
+								type='text'
+								name='textToSpeech'
+								placeholder='Text'
+								autofocus
+								minlength='1'
+								maxlength='1000'
+								required
+							).form-control
+						div.form-group
+							label(for='language') Language
+							input(
+								id='language'
+								type='text'
+								name='language'
+								placeholder='Language'
+								value='es'
+								required
+							).form-control
+						div.form-group
+							label(for='speed') Speed
+							input(
+								id='speed'
+								type='number'
+								name='speed'
+								placeholder='Speed'
+								value='1'
+								min='0.4'
+								max='2'
+								step='0.01'
+								required
+							).form-control
+						button(
+							onclick='onSubmit(event)'
+						).btn.btn-default
+							span Submit

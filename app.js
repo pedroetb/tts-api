@@ -1,60 +1,49 @@
-var http = require('http'),
-	fs = require('fs'),
-	formidable = require('formidable'),
-	util = require('util'),
+var util = require('util'),
 	childProcess = require('child_process'),
 	express = require("express"),
+	bodyParser = require("body-parser"),
 
-	server = express();
+	server = express(),
+	port = 3000;
 
-server.get('/', function (req, res) {
+server.set('view engine', 'pug')
+	.use(bodyParser.json())
 
-	displayForm(res);
-});
+	.use('/css/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
+	.use('/css/alertify', express.static(__dirname + '/node_modules/alertifyjs/build/css'))
+	.use('/css/alertify', express.static(__dirname + '/node_modules/alertifyjs/build/css/themes'))
+	.use('/js', express.static(__dirname + '/js'))
+	.use('/js/alertify', express.static(__dirname + '/node_modules/alertifyjs/build'))
 
-server.post('/', function (req, res) {
+	.get('/form', renderForm)
+	.post('/', processData)
 
-	processForm(req, res);
-});
+	.listen(port, function() {
 
-function displayForm(res) {
-
-	fs.readFile('form.html', function (err, data) {
-
-		res.writeHead(200, {
-			'Content-Type': 'text/html',
-			'Content-Length': data.length
-		});
-		res.write(data);
-		res.end();
+		var port = this.address().port;
+		console.log('Listening at port', port);
 	});
+
+function renderForm(req, res) {
+
+	res.render('form');
 }
 
-function processForm(req, res) {
+function processData(req, res) {
 
-	var form = new formidable.IncomingForm();
-
-	form.parse(req, parseForm.bind(this, res));
-}
-
-function parseForm(res, err, fields, files) {
-
-	var exec = childProcess.exec,
-		cmd = getCmdWithArgs(fields);
+	var body = req.body,
+		exec = childProcess.exec,
+		cmd = getCmdWithArgs(body),
+		cbk = onSpeechDone.bind(this, {
+			res: res,
+			fields: body
+		});
 
 	if (!cmd) {
-		onSpeechDone(res, {
-			fields: fields,
-			files: files
-		}, 'Empty command was generated');
-
-		return;
+		cbk('Empty command generated');
+	} else {
+		exec(cmd, cbk);
 	}
-
-	exec(cmd, onSpeechDone.bind(this, res, {
-		fields: fields,
-		files: files
-	}));
 }
 
 function getCmdWithArgs(fields) {
@@ -109,26 +98,21 @@ function getEspeakCmdWithArgs(fields) {
 	return cmd + ' ' + args;
 }
 
-function onSpeechDone(res, formData, err, stdout, stderr) {
+function onSpeechDone(args, err, stdout, stderr) {
+
+	var res = args.res,
+		fields = args.fields;
 
 	if (!err) {
-		displayForm(res);
+		res.end();
 		return;
 	}
 
-	res.writeHead(200, {
+	res.writeHead(500, {
 		'content-type': 'text/plain'
 	});
 	res.write('error:\n\n');
 	res.write(util.inspect(err) + '\n\n');
-	res.write('received the data:\n\n');
-	res.end(util.inspect(formData));
+	res.write('received data:\n\n');
+	res.end(util.inspect(fields));
 }
-
-server.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
-
-server.listen(3000, function () {
-
-	var port = this.address().port;
-	console.log('Listening at port', port);
-});

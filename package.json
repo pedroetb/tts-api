@@ -1,7 +1,11 @@
 {
-  "name": "text-to-banana-speech",
-  "version": "1.0.0",
-  "description": "Send text to hear it",
+  "name": "tts-api",
+  "version": "2.0.0",
+  "description": "Text to speech REST API for multiple TTS engines",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pedroetb/tts-api.git"
+  },
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
@@ -15,8 +19,10 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "alertifyjs": "^1.10.0",
+    "body-parser": "^1.17.1",
     "bootstrap": "^3.3.7",
-    "express": "^4.14.0",
-    "formidable": "^1.0.17"
+    "express": "^4.15.2",
+    "pug": "^2.0.0-beta.12"
   }
 }
