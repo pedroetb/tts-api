@@ -17,7 +17,7 @@
       "email": "pedroetb@gmail.com"
     }
   ],
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "alertifyjs": "^1.10.0",
     "body-parser": "^1.17.1",
