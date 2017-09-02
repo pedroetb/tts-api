@@ -20,7 +20,7 @@ pip install google_speech --upgrade
 ### Festival
 
 ```
-apt install festival
+apt install festival festvox-ellpc11k
 ```
 
 ### eSpeak
