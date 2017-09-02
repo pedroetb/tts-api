@@ -32,22 +32,27 @@ function getInputValues(form) {
 
 function submitData(data) {
 
-	alertify.message('Speaking...');
+	alertify.set('notifier', 'position', 'top-right');
+	var startMessageHandler = alertify.message('Speaking...', 0);
+
 	fetch('/', {
 		method: 'post',
 		headers: new Headers({
 			'Content-Type': 'application/json'
 		}),
 		body: JSON.stringify(data)
-	}).then(function(res) {
+	}).then((function(startMessageHandler, res) {
 
+		startMessageHandler.dismiss();
 		if (res.ok) {
 			alertify.success('Speech done!');
 		} else {
 			alertify.error('Speech error!');
 		}
-	}).catch(function(err) {
+	}).bind(null, startMessageHandler))
+	.catch((function(startMessageHandler, err) {
 
+		startMessageHandler.dismiss();
 		alertify.error('Connection error!');
-	});
+	}).bind(null, startMessageHandler));
 }

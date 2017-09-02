@@ -1,7 +1,7 @@
 var util = require('util'),
 	childProcess = require('child_process'),
-	express = require("express"),
-	bodyParser = require("body-parser"),
+	express = require('express'),
+	bodyParser = require('body-parser'),
 
 	server = express(),
 	port = 3000;
@@ -15,7 +15,7 @@ server.set('view engine', 'pug')
 	.use('/js', express.static(__dirname + '/js'))
 	.use('/js/alertify', express.static(__dirname + '/node_modules/alertifyjs/build'))
 
-	.get('/form', renderForm)
+	.get('/', renderForm)
 	.post('/', processData)
 
 	.listen(port, function() {
@@ -26,7 +26,8 @@ server.set('view engine', 'pug')
 
 function renderForm(req, res) {
 
-	res.render('form');
+	var formView = 'form';
+	res.render(formView);
 }
 
 function processData(req, res) {
