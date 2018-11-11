@@ -9,24 +9,24 @@ First, you should install the supported TTS engines:
 ### GoogleSpeech
 
 ```
-apt install python3 sox libsox-fmt-mp3
-pip install google_speech
+$ apt install python3 sox libsox-fmt-mp3
+$ pip install google_speech
 
 # Run only when you need to upgrade
-pip install --upgrade pip
-pip install google_speech --upgrade
+$ pip install --upgrade pip
+$ pip install google_speech --upgrade
 ```
 
 ### Festival
 
 ```
-apt install festival festvox-ellpc11k
+$ apt install festival festvox-ellpc11k
 ```
 
 ### eSpeak
 
 ```
-apt install espeak
+$ apt install espeak
 ```
 
 You also need to install **nodejs** and **npm**, and then, simply run `npm install` and `npm start`.
@@ -65,6 +65,13 @@ You can send a POST request to `http://localhost:3000` following this scheme:
 	* **Content-Type**: `application/json`
 * **Body**
 	* `{ "voice": "google_speech", "textToSpeech": "hello world", "language": "en", "speed": "1" }`
+
+For example, using `curl`:
+```
+$ curl http://localhost:3000 \
+  -d '{ "voice": "google_speech", "textToSpeech": "hello world", "language": "en", "speed": "1" }' \
+  -H "Content-Type: application/json"
+```
 
 ## Available TTS engines
 
