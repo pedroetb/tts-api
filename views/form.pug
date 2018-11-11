@@ -10,37 +10,43 @@ html
 		script(src='/js/form.js')
 
 	body
-		div.container
+		div(
+			style='padding-top: 15px; padding-bottom: 15px'
+		).container
 			div.row
-				h1 TTS-API
+				div.col-12
+					h1 TTS-API
 			div.row
-				div.col-xs-12
+				div.col-12
 					form
 						div.form-group
 							label Voice
-							div
-								label.radio-inline
-									input(
-										type='radio'
-										name='voice'
-										value='google_speech'
-										checked
-									)
-									span GoogleSpeech
-								label.radio-inline
-									input(
-										type='radio'
-										name='voice'
-										value='festival'
-									)
-									span Festival
-								label.radio-inline
-									input(
-										type='radio'
-										name='voice'
-										value='espeak'
-									)
-									span eSpeak
+							div.form-check
+								div.form-check-inline
+									label.form-check-label
+										input.form-check-input(
+											type='radio'
+											name='voice'
+											value='google_speech'
+											checked
+										)
+										span GoogleSpeech
+								div.form-check-inline
+									label.form-check-label
+										input.form-check-input(
+											type='radio'
+											name='voice'
+											value='festival'
+										)
+										span Festival
+								div.form-check-inline
+									label.form-check-label
+										input.form-check-input(
+											type='radio'
+											name='voice'
+											value='espeak'
+										)
+										span eSpeak
 						div.form-group
 							label(for='textToSpeech') Text
 							textarea(
@@ -78,5 +84,5 @@ html
 							).form-control
 						button(
 							onclick='onSubmit(event)'
-						).btn.btn-default
+						).btn.btn-primary
 							span Submit
