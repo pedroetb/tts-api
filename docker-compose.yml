@@ -1,0 +1,28 @@
+version: '2.4'
+
+services:
+  tts-api:
+    image: pedroetb/tts-api:${IMAGE_TAG:-latest}
+    networks:
+      - traefik-net
+    devices:
+      - /dev/snd
+    healthcheck:
+      test: wget --spider -S -t 3 http://localhost:${PORT}
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+    labels:
+      traefik.port: "${PORT}"
+      traefik.docker.network: traefik-net
+      traefik.frontend.rule: Host:tts.${PUBLIC_HOSTNAME}
+      traefik.backend: tts-api
+    restart: on-failure
+    cpus: '2'
+    mem_limit: 64M
+    mem_reservation: 52M
+
+networks:
+  traefik-net:
+    external: true

@@ -32,6 +32,22 @@ apt install espeak
 You also need to install **nodejs** and **npm**, and then, simply run `npm install` and `npm start`.
 The API should now be running at `http://localhost:3000`.
 
+Or you can just use [pedroetb/tts-api](https://hub.docker.com/r/pedroetb/tts-api) **Docker** image, which already has all dependencies configured.
+
+## Setup using Docker
+
+The only requirement is to install **Docker** first, and then you can run:
+```
+$ docker run --rm --device /dev/snd -d -p 3000:3000 pedroetb/tts-api
+```
+
+You can use `docker-compose` (install it first) to simplify even more the process:
+```
+$ docker-compose up -d
+```
+The compose version is prepared to be reverse-proxied with **Traefik**, and accessible at `tts.${PUBLIC_HOSTNAME}` domain. How to run **Traefik** is not described here, check its [official site](https://traefik.io).
+Don't forget to update `PUBLIC_HOSTNAME` environment variable value before deploying.
+
 ## Usage
 
 When running, the API will receive POST request at `http://localhost:3000`.

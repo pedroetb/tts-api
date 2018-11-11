@@ -1,0 +1,6 @@
+.*
+node_modules
+*.md
+LICENSE
+Dockerfile
+docker-compose.yml
