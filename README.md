@@ -41,11 +41,17 @@ The only requirement is to install **Docker** first, and then you can run:
 $ docker run --rm --device /dev/snd -d -p 3000:3000 pedroetb/tts-api
 ```
 
-You can use `docker-compose` (install it first) to simplify even more the process:
+You can deploy it in a **Docker Swarm** cluster using `docker-compose` (install it first) and `docker swarm` (create swarm first) to simplify even more the process:
 ```
-$ docker-compose up -d
+$ cd deploy
+$ env $(grep -v '^#\| ' .env | xargs) docker stack deploy -c docker-compose.caddy.yml tts-api
+$ docker-compose -p tts-api up -d
 ```
-The compose version is prepared to be reverse-proxied with **Traefik**, and accessible at `tts.${PUBLIC_HOSTNAME}` domain. How to run **Traefik** is not described here, check its [official site](https://traefik.io).
+
+The service defined in docker-compose file is prepared to be reverse-proxied with **Traefik**, and accessible at `tts.${PUBLIC_HOSTNAME}` domain. How to run **Traefik** is not described here, check its [official site](https://traefik.io).
+
+The proxy needs a little help of **Caddy** (provided by [lucaslorentz/caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy) plugin for Docker), because Docker Swarm is not compatible with privileged mode or devices configuration yet (required to use sound capabilities), and Traefik cannot work with Docker containers and Docker Swarm services at the same time.
+
 Don't forget to update `PUBLIC_HOSTNAME` environment variable value before deploying.
 
 ## Usage

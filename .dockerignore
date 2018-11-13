@@ -1,6 +1,6 @@
 .*
 node_modules
+deploy
 *.md
 LICENSE
 Dockerfile
-docker-compose.yml

@@ -4,7 +4,7 @@ services:
   tts-api:
     image: pedroetb/tts-api:${IMAGE_TAG:-latest}
     networks:
-      - traefik-net
+      - caddy-net
     devices:
       - /dev/snd
     healthcheck:
@@ -14,15 +14,13 @@ services:
       retries: 3
       start_period: 1m
     labels:
-      traefik.port: "${PORT}"
-      traefik.docker.network: traefik-net
-      traefik.frontend.rule: Host:tts.${PUBLIC_HOSTNAME}
-      traefik.backend: tts-api
+      caddy.address: ":2015"
+      caddy.targetport: "${PORT}"
+      caddy.tls: "off"
     restart: on-failure
-    cpus: '2'
     mem_limit: 64M
     mem_reservation: 52M
 
 networks:
-  traefik-net:
+  caddy-net:
     external: true
