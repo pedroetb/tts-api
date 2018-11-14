@@ -17,7 +17,7 @@ services:
       caddy.address: ":2015"
       caddy.targetport: "${PORT}"
       caddy.tls: "off"
-    restart: on-failure
+    restart: always
     mem_limit: 64M
     mem_reservation: 52M
 
