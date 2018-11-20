@@ -80,7 +80,7 @@ function getFestivalCmdWithArgs(fields) {
 		language = fields.language,
 
 		cmd = 'echo "' + text + '" | festival',
-		args = '--tts --language ' + language;
+		args = '--tts --heap 1000000 --language ' + language;
 
 	return cmd + ' ' + args;
 }
