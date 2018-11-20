@@ -1,6 +1,6 @@
 {
   "name": "tts-api",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Text to speech REST API for multiple TTS engines",
   "repository": {
     "type": "git",
