@@ -8,7 +8,7 @@ services:
     devices:
       - /dev/snd
     healthcheck:
-      test: wget --spider -S -t 3 http://localhost:${PORT}
+      test: wget --spider -nv -t 3 http://localhost:${PORT}
       interval: 30s
       timeout: 10s
       retries: 3

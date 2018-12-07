@@ -45,7 +45,7 @@ You can deploy it in a **Docker Swarm** cluster using `docker-compose` (install 
 ```
 $ cd deploy
 $ env $(grep -v '^#\| ' .env | xargs) docker stack deploy -c docker-compose.caddy.yml tts-api
-$ docker-compose -p tts-api up -d
+$ docker-compose -f docker-compose.tts-api.yml -p tts-api up -d
 ```
 
 The service defined in docker-compose file is prepared to be reverse-proxied with **Traefik**, and accessible at `tts.${PUBLIC_HOSTNAME}` domain. How to run **Traefik** is not described here, check its [official site](https://traefik.io).

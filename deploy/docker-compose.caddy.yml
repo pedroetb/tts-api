@@ -10,10 +10,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       labels:
-        traefik.port: "2015"
         traefik.docker.network: traefik-net
         traefik.frontend.rule: Host:tts.${PUBLIC_HOSTNAME}
         traefik.backend: tts-api
+        traefik.port: "2015"
       restart_policy:
         delay: 10s
         window: 30s
@@ -22,7 +22,7 @@ services:
           cpus: '0.1'
           memory: 32M
         reservations:
-          memory: 26M
+          memory: 16M
 
 networks:
   caddy-net:
