@@ -4,6 +4,8 @@ services:
   tts-api:
     image: ${IMAGE_NAME:-pedroetb/tts-api}:${IMAGE_TAG:-latest}
     container_name: ${CONTAINER_NAME:-tts-api}
+    environment:
+      LC_ALL:
     networks:
       tts-api-net:
     devices:
