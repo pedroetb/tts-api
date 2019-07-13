@@ -1,9 +1,16 @@
 {
   "name": "tts-api",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "Text to speech REST API for multiple TTS engines",
-	"keywords": ["text-to-speech", "tts", "speech", "voice", "rest-api", "api"],
-	"homepage": "https://github.com/pedroetb/tts-api",
+  "keywords": [
+    "text-to-speech",
+    "tts",
+    "speech",
+    "voice",
+    "rest-api",
+    "api"
+  ],
+  "homepage": "https://github.com/pedroetb/tts-api",
   "license": "MIT",
   "author": "Pedro Trujillo",
   "contributors": [
