@@ -2,33 +2,42 @@ version: '3.7'
 
 services:
   caddy:
-    image: lucaslorentz/caddy-docker-proxy:${IMAGE_TAG:-alpine}
+    image: ${IMAGE_NAME:-lucaslorentz/caddy-docker-proxy}:${IMAGE_TAG:-alpine}
+    environment:
+      CADDY_DOCKER_LABEL_PREFIX:
     networks:
-      - caddy-net
-      - traefik-net
+      tts-api-net:
+      traefik-net:
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ${EXT_DOCKER_SOCKET:-/var/run/docker.sock}:${INT_DOCKER_SOCKET:-/var/run/docker.sock}
     deploy:
-      labels:
-        traefik.docker.network: traefik-net
-        traefik.frontend.rule: Host:tts.${PUBLIC_HOSTNAME}
-        traefik.backend: tts-api
-        traefik.port: "2015"
+      mode: replicated
+      replicas: ${REPLICAS:-1}
       restart_policy:
-        delay: 10s
-        window: 30s
+        delay: ${RESTART_DELAY:-3s}
+      update_config:
+        delay: ${UPDATE_DELAY:-1m}
+      placement:
+        constraints:
+          - ${PLACEMENT_CONSTRAINT:-node.hostname == node}
+      labels:
+        traefik.frontend.rule: Host:${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}
+        traefik.backend: tts-api
+        traefik.port: '${CADDY_PORT}'
       resources:
         limits:
-          cpus: '0.1'
-          memory: 32M
+          cpus: '${RESOURCES_LIMITS_CPUS:-0.1}'
+          memory: ${RESOURCES_LIMITS_MEMORY:-32M}
         reservations:
-          memory: 16M
+          cpus: '${RESOURCES_RESERVATIONS_CPUS:-0.001}'
+          memory: ${RESOURCES_RESERVATIONS_MEMORY:-8M}
 
 networks:
-  caddy-net:
-    name: caddy-net
+  tts-api-net:
+    name: ${TTS_API_NET_NAME:-tts-api-net}
     driver: overlay
     attachable: true
 
   traefik-net:
+    name: ${TRAEFIK_NET_NAME:-traefik-net}
     external: true

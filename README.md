@@ -36,23 +36,37 @@ Or you can just use [pedroetb/tts-api](https://hub.docker.com/r/pedroetb/tts-api
 
 ## Setup using Docker
 
-The only requirement is to install **Docker** first, and then you can run:
+The only requirement is to have **Docker** installed. Then, you can run:
 ```
 $ docker run --rm --device /dev/snd -d -p 3000:3000 pedroetb/tts-api
 ```
 
-You can deploy it in a **Docker Swarm** cluster using `docker-compose` (install it first) and `docker swarm` (create swarm first) to simplify even more the process:
+The API will be running and accessible at `http://localhost:3000`.
+
+Alternatively, you can deploy it in a **Docker Swarm** cluster using `docker-compose` (install it first) and `docker swarm` (create Swarm cluster first):
 ```
 $ cd deploy
-$ env $(grep -v '^#\| ' .env | xargs) docker stack deploy -c docker-compose.caddy.yml tts-api
-$ docker-compose -f docker-compose.tts-api.yml -p tts-api up -d
+# Deploy Caddy service
+$ env $(grep -v '^[#| ]' .env | xargs) \
+	TRAEFIK_DOMAIN=change.me \
+	PLACEMENT_CONSTRAINT='node.hostname == node' \
+	docker stack deploy \
+	-c docker-compose.caddy.yml \
+	tts-api
+# Deploy API-TTS container
+$ docker-compose \
+	-f docker-compose.tts-api.yml \
+	-p tts-api \
+	up -d
 ```
 
-The service defined in docker-compose file is prepared to be reverse-proxied with **Traefik**, and accessible at `tts.${PUBLIC_HOSTNAME}` domain. How to run **Traefik** is not described here, check its [official site](https://traefik.io).
+The service is prepared to be reverse-proxied with **Traefik**, and accessible at `tts.${TRAEFIK_DOMAIN}` domain. How to run **Traefik** is not described here, check its [official site](https://traefik.io).
 
-The proxy needs a little help of **Caddy** (provided by [lucaslorentz/caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy) plugin for Docker), because Docker Swarm is not compatible with privileged mode or devices configuration yet (required to use sound capabilities), and Traefik cannot work with Docker containers and Docker Swarm services at the same time.
+The proxy needs a little help from **Caddy** (provided by [lucaslorentz/caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy) plugin for Docker), because Docker Swarm is not compatible with devices configuration (required to use sound capabilities), and Traefik cannot work with Docker containers and Docker Swarm services at once.
 
-Don't forget to update `PUBLIC_HOSTNAME` environment variable value before deploying.
+Both, Docker container and service, must be running on the same host, to be able to communicate. `PLACEMENT_CONSTRAINT` environment variable is used at service to ensure that tasks are created always into same host. Check [service constraints documentation](https://docs.docker.com/engine/reference/commandline/service_create/#specify-service-constraints-constraint) to choose how to set it.
+
+Don't forget to edit `TRAEFIK_DOMAIN` and `PLACEMENT_CONSTRAINT` environment variables before deploying.
 
 ## Usage
 
