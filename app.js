@@ -53,6 +53,8 @@ function getCmdWithArgs(fields) {
 
 	if (voice === 'google_speech') {
 		return getGoogleSpeechCmdWithArgs(fields);
+	} else if (voice === 'gtts') {
+		return getGttsCmdWithArgs(fields);
 	} else if (voice === 'festival') {
 		return getFestivalCmdWithArgs(fields);
 	} else if (voice === 'espeak') {
@@ -68,10 +70,21 @@ function getGoogleSpeechCmdWithArgs(fields) {
 		language = fields.language,
 		speed = fields.speed,
 
-		cmd = 'google_speech',
-		args = '-l ' + language + ' \"' + text + '\"' + ' -e overdrive 10 speed ' + speed;
+		cmd = 'google_speech' + ' -l ' + language + ' \"' + text + '\"' + ' -e overdrive 10 speed ' + speed;
 
-	return cmd + ' ' + args;
+	return cmd;
+}
+
+function getGttsCmdWithArgs(fields) {
+
+	var text = fields.textToSpeech,
+		language = fields.language,
+		speed = fields.speed,
+		speedParam = speed ? ' -s' : '',
+
+		cmd = 'gtts-cli' + ' -l ' + language + speedParam + ' --nocheck \"' + text + '\"' + ' | play -t mp3 -';
+
+	return cmd;
 }
 
 function getFestivalCmdWithArgs(fields) {
@@ -79,10 +92,9 @@ function getFestivalCmdWithArgs(fields) {
 	var text = fields.textToSpeech,
 		language = fields.language,
 
-		cmd = 'echo "' + text + '" | festival',
-		args = '--tts --heap 1000000 --language ' + language;
+		cmd = 'echo "' + text + '" | festival' + ' --tts --heap 1000000 --language ' + language;
 
-	return cmd + ' ' + args;
+	return cmd;
 }
 
 function getEspeakCmdWithArgs(fields) {
@@ -93,10 +105,9 @@ function getEspeakCmdWithArgs(fields) {
 		speed = Math.floor(fields.speed * 150),
 		pitch = '70',
 
-		cmd = 'espeak',
-		args = '-v' + language + voiceCode + ' -s ' + speed + ' -p ' + pitch + ' \"' + text + '\"';
+		cmd = 'espeak' + ' -v' + language + voiceCode + ' -s ' + speed + ' -p ' + pitch + ' \"' + text + '\"';
 
-	return cmd + ' ' + args;
+	return cmd;
 }
 
 function onSpeechDone(args, err, stdout, stderr) {

@@ -11,10 +11,13 @@ First, you should install the supported TTS engines:
 ```
 $ apt install python3 sox libsox-fmt-mp3
 $ pip install google_speech
+```
 
-# Run only when you need to upgrade
-$ pip install --upgrade pip
-$ pip install google_speech --upgrade
+### gTTS
+
+```
+$ apt install python3 sox libsox-fmt-mp3
+$ pip install gTTS
 ```
 
 ### Festival
@@ -102,6 +105,14 @@ Google Speech is a simple multiplatform command line tool to read text using Goo
 You need to be online to communicate with Google servers.
 
 Learn more at https://github.com/desbma/GoogleSpeech
+
+### gTTS
+
+Google Text-to-Speech (gTTS) is a Python library and CLI tool to interface with Google Translate's text-to-speech API.
+
+You need to be online to communicate with Google servers.
+
+Learn more at https://github.com/pndurette/gTTS
 
 ### Festival
 

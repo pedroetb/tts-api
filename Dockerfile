@@ -7,6 +7,7 @@ LABEL maintainer="pedroetb@gmail.com"
 ARG APT_REPOSITORY="deb http://ftp.de.debian.org/debian stretch main non-free"
 
 ARG GOOGLE_SPEECH_VERSION=1.1.0
+ARG GTTS_VERSION=2.0.3
 ARG ESPEAK_VERSION=1.48.04+dfsg-5+b1
 ARG FESTIVAL_VERSION=1:2.4~release-3+b1
 
@@ -31,7 +32,8 @@ RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 		festvox-ellpc11k=${FESTVOX_ELLPC11K_VERSION} \
 		espeak=${ESPEAK_VERSION} && \
 	pip3 install \
-		google_speech==${GOOGLE_SPEECH_VERSION} && \
+		google_speech==${GOOGLE_SPEECH_VERSION} \
+		gTTS==${GTTS_VERSION} && \
 	apt-get remove --purge -y \
 		python3-pip \
 		python3-setuptools \
