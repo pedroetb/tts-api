@@ -48,6 +48,7 @@ function getInputValues(form) {
 	for (var i = 0; i < inputs.length; i++) {
 		var input = inputs[i],
 			inputName = input.name,
+			inputType = input.type,
 			inputValueAlreadySet = !!inputValues[inputName];
 
 		if (inputValueAlreadySet) {
@@ -61,7 +62,7 @@ function getInputValues(form) {
 			continue;
 		}
 
-		inputValues[inputName] = namedInput.value;
+		inputValues[inputName] = inputType === 'checkbox' ? namedInput.checked : namedInput.value;
 	}
 
 	return inputValues;

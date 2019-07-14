@@ -9,7 +9,6 @@ html
 		script(src='/js/alertify/alertify.min.js')
 		script(src='/js/form.js')
 
-	body
 		-
 			voice = {
 				name: 'voice',
@@ -38,9 +37,21 @@ html
 				step: 0.01
 			}
 
+			modifiers = {
+				label: 'Modifiers'
+			}
+
+			slowReading = {
+				id: 'slowReading',
+				label: 'Slow reading'
+			}
+
 			voices = [{
 				value: 'google_speech',
-				label: 'GoogleSpeech'
+				label: 'GoogleSpeech',
+				incompatibleSettings: [
+					slowReading.id
+				]
 			},{
 				value: 'gtts',
 				label: 'gTTS'
@@ -48,13 +59,18 @@ html
 				value: 'festival',
 				label: 'Festival',
 				incompatibleSettings: [
-					speed.id
+					speed.id,
+					slowReading.id
 				]
 			},{
 				value: 'espeak',
-				label: 'eSpeak'
+				label: 'eSpeak',
+				incompatibleSettings: [
+					slowReading.id
+				]
 			}]
 
+	body(onload=`onVoiceChange(${JSON.stringify(voices[0])})`)
 		div(
 			style='padding-top: 15px; padding-bottom: 15px'
 		).container
@@ -117,6 +133,18 @@ html
 								step=speed.step
 								required
 							).form-control
+
+						div.form-group
+							label #{modifiers.label}
+							div.form-check
+								div.form-check-inline
+									label.form-check-label
+										input.form-check-input(
+											id=slowReading.id
+											type='checkbox'
+											name=slowReading.id
+										)
+										span #{slowReading.label}
 
 						button(
 							onclick='onSubmit(event)'

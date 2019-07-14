@@ -84,7 +84,7 @@ function getGttsCmdWithArgs(fields) {
 	var text = fields.textToSpeech,
 		language = fields.language,
 		speed = fields.speed,
-		slowSpeedParam = fields.slowSpeed ? '-s' : null,
+		slowReadingParam = fields.slowReading ? '-s' : null,
 
 		args0 = [
 			'-l', language,
@@ -92,8 +92,8 @@ function getGttsCmdWithArgs(fields) {
 			text
 		];
 
-	if (slowSpeedParam) {
-		args0.unshift(slowSpeedParam);
+	if (slowReadingParam) {
+		args0.unshift(slowReadingParam);
 	}
 
 	return [{
