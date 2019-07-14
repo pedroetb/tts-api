@@ -84,16 +84,21 @@ function getGttsCmdWithArgs(fields) {
 	var text = fields.textToSpeech,
 		language = fields.language,
 		speed = fields.speed,
-		slowSpeed = fields.slowSpeed ? '-s' : '';
+		slowSpeedParam = fields.slowSpeed ? '-s' : null,
+
+		args0 = [
+			'-l', language,
+			'--nocheck',
+			text
+		];
+
+	if (slowSpeedParam) {
+		args0.unshift(slowSpeedParam);
+	}
 
 	return [{
 		cmd: 'gtts-cli',
-		args: [
-			'-l', language,
-			'--nocheck',
-			slowSpeed,
-			text
-		]
+		args: args0
 	},{
 		cmd: 'play',
 		args: [
