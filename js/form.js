@@ -1,3 +1,31 @@
+var disabledInputIds;
+
+function onVoiceChange(voiceItem) {
+
+	if (disabledInputIds) {
+		updateInputsDisabledState(disabledInputIds, false);
+		disabledInputIds = null;
+	}
+
+	var incompatibleSettings = voiceItem.incompatibleSettings;
+	if (incompatibleSettings && incompatibleSettings instanceof Array) {
+		updateInputsDisabledState(incompatibleSettings, true);
+		disabledInputIds = incompatibleSettings;
+	}
+}
+
+function updateInputsDisabledState(inputIds, disable) {
+
+	for (var i = 0; i < inputIds.length; i++) {
+		var input = document.getElementById(inputIds[i]);
+		if (disable) {
+			input.setAttribute('disabled', '');
+		} else {
+			input.removeAttribute('disabled');
+		}
+	}
+}
+
 function onSubmit(evt) {
 
 	var form = document.forms[0];
@@ -20,11 +48,20 @@ function getInputValues(form) {
 	for (var i = 0; i < inputs.length; i++) {
 		var input = inputs[i],
 			inputName = input.name,
-			namedInput = inputs[inputName];
+			inputValueAlreadySet = !!inputValues[inputName];
 
-		if (namedInput) {
-			inputValues[inputName] = namedInput.value;
+		if (inputValueAlreadySet) {
+			continue;
 		}
+
+		var namedInput = inputs[inputName],
+			inputIsDisabled = !(!disabledInputIds || disabledInputIds.indexOf(inputName) === -1);
+
+		if (!namedInput || inputIsDisabled) {
+			continue;
+		}
+
+		inputValues[inputName] = namedInput.value;
 	}
 
 	return inputValues;

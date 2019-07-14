@@ -3,93 +3,121 @@ doctype html
 html
 	head
 		title TTS-API
-		link(rel='stylesheet', href='/css/bootstrap/bootstrap.min.css')
-		link(rel='stylesheet', href='/css/alertify/alertify.min.css')
-		link(rel='stylesheet', href='/css/alertify/default.min.css')
+		link(rel='stylesheet' href='/css/bootstrap/bootstrap.min.css')
+		link(rel='stylesheet' href='/css/alertify/alertify.min.css')
+		link(rel='stylesheet' href='/css/alertify/default.min.css')
 		script(src='/js/alertify/alertify.min.js')
 		script(src='/js/form.js')
 
 	body
+		-
+			voice = {
+				name: 'voice',
+				label: 'Voice'
+			}
+
+			text = {
+				id: 'textToSpeech',
+				label: 'Text',
+				minLength: 1,
+				maxLength: 1000
+			}
+
+			language = {
+				id: 'language',
+				label: 'Language',
+				value: 'es'
+			}
+
+			speed = {
+				id: 'speed',
+				label: 'Speed',
+				value: 1,
+				min: 0.4,
+				max: 2,
+				step: 0.01
+			}
+
+			voices = [{
+				value: 'google_speech',
+				label: 'GoogleSpeech'
+			},{
+				value: 'gtts',
+				label: 'gTTS'
+			},{
+				value: 'festival',
+				label: 'Festival',
+				incompatibleSettings: [
+					speed.id
+				]
+			},{
+				value: 'espeak',
+				label: 'eSpeak'
+			}]
+
 		div(
 			style='padding-top: 15px; padding-bottom: 15px'
 		).container
 			div.row
 				div.col-12
 					h1 TTS-API
+
 			div.row
 				div.col-12
 					form
 						div.form-group
-							label Voice
+							label #{voice.label}
 							div.form-check
-								div.form-check-inline
-									label.form-check-label
-										input.form-check-input(
-											type='radio'
-											name='voice'
-											value='google_speech'
-											checked
-										)
-										span GoogleSpeech
-								div.form-check-inline
-									label.form-check-label
-										input.form-check-input(
-											type='radio'
-											name='voice'
-											value='gtts'
-										)
-										span gTTS
-								div.form-check-inline
-									label.form-check-label
-										input.form-check-input(
-											type='radio'
-											name='voice'
-											value='festival'
-										)
-										span Festival
-								div.form-check-inline
-									label.form-check-label
-										input.form-check-input(
-											type='radio'
-											name='voice'
-											value='espeak'
-										)
-										span eSpeak
+								each voiceItem, index in voices
+									div.form-check-inline
+										label.form-check-label
+											input.form-check-input(
+												type='radio'
+												name=voice.name
+												value=voiceItem.value
+												checked=(!index ? true : false)
+												onchange=`onVoiceChange(${JSON.stringify(voiceItem)})`
+											)
+											span #{voiceItem.label}
+
 						div.form-group
-							label(for='textToSpeech') Text
+							label(for=text.id) #{text.label}
 							textarea(
-								id='textToSpeech'
+								id=text.id
 								type='text'
-								name='textToSpeech'
-								placeholder='Text'
+								name=text.id
+								placeholder=text.label
 								autofocus
-								minlength='1'
-								maxlength='1000'
+								minlength=text.minLength
+								maxlength=text.maxLength
 								required
 							).form-control
+
 						div.form-group
-							label(for='language') Language
+							label(for=language.id) #{language.label}
 							input(
-								id='language'
+								id=language.id
 								type='text'
-								name='language'
-								placeholder='Language'
-								value='es'
+								name=language.id
+								placeholder=language.label
+								value=language.value
 								required
 							).form-control
+
 						div.form-group
-							label(for='speed') Speed
+							label(for=speed.id) #{speed.label}
 							input(
-								id='speed'
+								id=speed.id
 								type='number'
-								name='speed'
-								placeholder='Speed'
-								value='1'
-								min='0.4'
-								max='2'
-								step='0.01'
+								name=speed.id
+								placeholder=speed.label
+								value=speed.value
+								min=speed.min
+								max=speed.max
+								step=speed.step
 								required
 							).form-control
+
 						button(
 							onclick='onSubmit(event)'
 						).btn.btn-primary
