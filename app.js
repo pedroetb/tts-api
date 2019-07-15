@@ -64,18 +64,22 @@ function getGoogleSpeechCmdWithArgs(fields) {
 
 	var text = fields.textToSpeech,
 		language = fields.language,
-		speed = fields.speed;
+		soxArgs = getSoxEffectsArgs(fields);
+
+	var args = [
+		'-v', 'warning',
+		'-l', language,
+		text
+	];
+
+	if (soxArgs.length) {
+		args.push('-e');
+		args = args.concat(soxArgs);
+	}
 
 	return {
 		cmd: 'google_speech',
-		args: [
-			'-v', 'warning',
-			'-l', language,
-			text,
-			'-e',
-			'gain', '4',
-			'speed', speed
-		]
+		args: args
 	};
 }
 
@@ -83,17 +87,27 @@ function getGttsCmdWithArgs(fields) {
 
 	var text = fields.textToSpeech,
 		language = fields.language,
-		speed = fields.speed,
 		slowReadingParam = fields.slowReading ? '-s' : null,
+		soxArgs = getSoxEffectsArgs(fields);
 
-		args0 = [
-			'-l', language,
-			'--nocheck',
-			text
-		];
+	var args0 = [
+		'-l', language,
+		'--nocheck',
+		text
+	];
 
 	if (slowReadingParam) {
 		args0.unshift(slowReadingParam);
+	}
+
+	var args1 = [
+		'-q',
+		'-t', 'mp3',
+		'-'
+	];
+
+	if (soxArgs.length) {
+		args1 = args1.concat(soxArgs);
 	}
 
 	return [{
@@ -101,14 +115,36 @@ function getGttsCmdWithArgs(fields) {
 		args: args0
 	},{
 		cmd: 'play',
-		args: [
-			'-q',
-			'-t', 'mp3',
-			'-',
-			'gain', '4',
-			'speed', speed
-		]
+		args: args1
 	}];
+}
+
+function getSoxEffectsArgs(fields) {
+
+	var availableParametrizedEffects = ['speed', 'pitch', 'tempo', 'gain', 'delay'],
+		availableUnaryEffects = ['reverse', 'reverb'],
+		args = [],
+		i, effectName, effectValue;
+
+	for (i = 0; i < availableParametrizedEffects.length; i++) {
+		effectName = availableParametrizedEffects[i];
+		effectValue = fields[effectName];
+
+		if (effectValue !== undefined) {
+			args.push(effectName, effectValue);
+		}
+	}
+
+	for (i = 0; i < availableUnaryEffects.length; i++) {
+		effectName = availableUnaryEffects[i];
+		effectValue = fields[effectName];
+
+		if (effectValue) {
+			args.push(effectName);
+		}
+	}
+
+	return args;
 }
 
 function getFestivalCmdWithArgs(fields) {
