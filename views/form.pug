@@ -146,6 +146,15 @@ form
 					)
 					span #{reverb.label}
 
+			div.form-check-inline
+				label.form-check-label
+					input.form-check-input(
+						id=robot.id
+						type='checkbox'
+						name=robot.id
+					)
+					span #{robot.label}
+
 	button(
 		onclick='onSubmit(event)'
 	).btn.btn-primary
