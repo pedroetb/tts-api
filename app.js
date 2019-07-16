@@ -119,6 +119,59 @@ function getGttsCmdWithArgs(fields) {
 	}];
 }
 
+function getFestivalCmdWithArgs(fields) {
+
+	var text = fields.textToSpeech,
+		language = fields.language;
+
+	return [{
+		cmd: 'echo',
+		args: [
+			text
+		]
+	},{
+		cmd: 'festival',
+		args: [
+			'--tts',
+			'--language', language,
+			'--heap', '1000000'
+		]
+	}];
+}
+
+function getEspeakCmdWithArgs(fields) {
+
+	var text = fields.textToSpeech,
+		language = fields.language,
+		voiceCode = fields.voiceCode || '',
+		voice = language + voiceCode,
+		soxArgs = getSoxEffectsArgs(fields);
+
+	var args0 = [
+		'-v', voice,
+		'--stdout',
+		text
+	];
+
+	var args1 = [
+		'-q',
+		'-t', 'wav',
+		'-'
+	];
+
+	if (soxArgs.length) {
+		args1 = args1.concat(soxArgs);
+	}
+
+	return [{
+		cmd: 'espeak',
+		args: args0
+	},{
+		cmd: 'play',
+		args: args1
+	}];
+}
+
 function getSoxEffectsArgs(fields) {
 
 	var availableParametrizedEffects = ['speed', 'pitch', 'tempo', 'gain', 'delay'],
@@ -145,46 +198,6 @@ function getSoxEffectsArgs(fields) {
 	}
 
 	return args;
-}
-
-function getFestivalCmdWithArgs(fields) {
-
-	var text = fields.textToSpeech,
-		language = fields.language;
-
-	return [{
-		cmd: 'echo',
-		args: [
-			text
-		]
-	},{
-		cmd: 'festival',
-		args: [
-			'--tts',
-			'--language', language,
-			'--heap', '1000000'
-		]
-	}];
-}
-
-function getEspeakCmdWithArgs(fields) {
-
-	var text = fields.textToSpeech,
-		language = fields.language,
-		voiceCode = '+f4',
-		voice = language + voiceCode,
-		speed = Math.floor(fields.speed * 150),
-		pitch = '70';
-
-	return {
-		cmd: 'espeak',
-		args: [
-			'-v', voice,
-			'-s', speed,
-			'-p', pitch,
-			text
-		]
-	};
 }
 
 function runLastSpeechProcess(cmdWithArgs, httpArgs) {
