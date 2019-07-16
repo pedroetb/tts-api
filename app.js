@@ -144,8 +144,12 @@ function getEspeakCmdWithArgs(fields) {
 	var text = fields.textToSpeech,
 		language = fields.language,
 		voiceCode = fields.voiceCode || '',
-		voice = language + voiceCode,
-		soxArgs = getSoxEffectsArgs(fields);
+		soxArgs = getSoxEffectsArgs(fields),
+		voice = language;
+
+	if (voiceCode) {
+		voice += '+' + voiceCode;
+	}
 
 	var args0 = [
 		'-v', voice,

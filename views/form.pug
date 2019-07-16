@@ -25,7 +25,16 @@ html
 			language = {
 				id: 'language',
 				label: 'Language',
-				value: 'es'
+				value: 'es',
+				minLength: 2,
+				maxLength: 50
+			}
+
+			voiceCode = {
+				id: 'voiceCode',
+				label: 'Voice code',
+				value: 'f4',
+				maxLength: 50
 			}
 
 			speed = {
@@ -96,15 +105,20 @@ html
 				value: 'google_speech',
 				label: 'GoogleSpeech',
 				incompatibleSettings: [
+					voiceCode.id,
 					slowReading.id
 				]
 			},{
 				value: 'gtts',
-				label: 'gTTS'
+				label: 'gTTS',
+				incompatibleSettings: [
+					voiceCode.id
+				]
 			},{
 				value: 'festival',
 				label: 'Festival',
 				incompatibleSettings: [
+					voiceCode.id,
 					speed.id,
 					pitch.id,
 					tempo.id,
@@ -169,7 +183,20 @@ html
 								name=language.id
 								placeholder=language.label
 								value=language.value
+								minlength=language.minLength
+								maxlength=language.maxLength
 								required
+							).form-control
+
+						div.form-group
+							label(for=voiceCode.id) #{voiceCode.label}
+							input(
+								id=voiceCode.id
+								type='text'
+								name=voiceCode.id
+								placeholder=voiceCode.label
+								value=voiceCode.value
+								maxlength=voiceCode.maxLength
 							).form-control
 
 						div.form-group
