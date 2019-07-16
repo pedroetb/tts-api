@@ -1,0 +1,24 @@
+doctype html
+
+include settings
+
+html
+	head
+		title TTS-API
+		link(rel='stylesheet' href='/css/bootstrap/bootstrap.min.css')
+		link(rel='stylesheet' href='/css/alertify/alertify.min.css')
+		link(rel='stylesheet' href='/css/alertify/default.min.css')
+		script(src='/js/alertify/alertify.min.js')
+		script(src='/js/form.js')
+
+	body(onload=`onVoiceChange(${JSON.stringify(voices[0])})`)
+		div(
+			style='padding-top: 15px; padding-bottom: 15px'
+		).container
+			div.row
+				div.col-12
+					h1 TTS-API
+
+			div.row
+				div.col-12
+					include form

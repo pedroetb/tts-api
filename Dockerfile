@@ -43,7 +43,8 @@ RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 
 WORKDIR /tts-api
 
-COPY package.json package-lock.json app.js ./
+COPY package.json package-lock.json ./
+COPY app/ ./app/
 COPY js/ ./js/
 COPY views/ ./views/
 

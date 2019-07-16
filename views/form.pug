@@ -1,300 +1,152 @@
-doctype html
+form
+	div.form-group
+		label #{voice.label}
+		div.form-check
+			each voiceItem, index in voices
+				div.form-check-inline
+					label.form-check-label
+						input.form-check-input(
+							type='radio'
+							name=voice.name
+							value=voiceItem.value
+							checked=(!index ? true : false)
+							onchange=`onVoiceChange(${JSON.stringify(voiceItem)})`
+						)
+						span #{voiceItem.label}
 
-html
-	head
-		title TTS-API
-		link(rel='stylesheet' href='/css/bootstrap/bootstrap.min.css')
-		link(rel='stylesheet' href='/css/alertify/alertify.min.css')
-		link(rel='stylesheet' href='/css/alertify/default.min.css')
-		script(src='/js/alertify/alertify.min.js')
-		script(src='/js/form.js')
+	div.form-group
+		label(for=text.id) #{text.label}
+		textarea(
+			id=text.id
+			type='text'
+			name=text.id
+			placeholder=text.label
+			autofocus
+			minlength=text.minLength
+			maxlength=text.maxLength
+			required
+		).form-control
 
-		-
-			voice = {
-				name: 'voice',
-				label: 'Voice'
-			}
+	div.form-group
+		label(for=language.id) #{language.label}
+		input(
+			id=language.id
+			type='text'
+			name=language.id
+			placeholder=language.label
+			value=language.value
+			minlength=language.minLength
+			maxlength=language.maxLength
+			required
+		).form-control
 
-			text = {
-				id: 'textToSpeech',
-				label: 'Text',
-				minLength: 1,
-				maxLength: 1000
-			}
+	div.form-group
+		label(for=voiceCode.id) #{voiceCode.label}
+		input(
+			id=voiceCode.id
+			type='text'
+			name=voiceCode.id
+			placeholder=voiceCode.label
+			value=voiceCode.value
+			maxlength=voiceCode.maxLength
+		).form-control
 
-			language = {
-				id: 'language',
-				label: 'Language',
-				value: 'es',
-				minLength: 2,
-				maxLength: 50
-			}
+	div.form-group
+		label(for=speed.id) #{speed.label}
+		input(
+			id=speed.id
+			type='number'
+			name=speed.id
+			placeholder=speed.label
+			value=speed.value
+			min=speed.min
+			max=speed.max
+			step=speed.step
+		).form-control
 
-			voiceCode = {
-				id: 'voiceCode',
-				label: 'Voice code',
-				value: 'f4',
-				maxLength: 50
-			}
+	div.form-group
+		label(for=pitch.id) #{pitch.label}
+		input(
+			id=pitch.id
+			type='number'
+			name=pitch.id
+			placeholder=pitch.label
+			value=pitch.value
+			min=pitch.min
+			max=pitch.max
+			step=pitch.step
+		).form-control
 
-			speed = {
-				id: 'speed',
-				label: 'Speed',
-				value: 1,
-				min: 0.4,
-				max: 2,
-				step: 0.01
-			}
+	div.form-group
+		label(for=tempo.id) #{tempo.label}
+		input(
+			id=tempo.id
+			type='number'
+			name=tempo.id
+			placeholder=tempo.label
+			value=tempo.value
+			min=tempo.min
+			max=tempo.max
+			step=tempo.step
+		).form-control
 
-			pitch = {
-				id: 'pitch',
-				label: 'Pitch',
-				value: 1,
-				min: -2000,
-				max: 2000,
-				step: 1
-			}
+	div.form-group
+		label(for=gain.id) #{gain.label}
+		input(
+			id=gain.id
+			type='number'
+			name=gain.id
+			placeholder=gain.label
+			value=gain.value
+			min=gain.min
+			max=gain.max
+			step=gain.step
+		).form-control
 
-			tempo = {
-				id: 'tempo',
-				label: 'Tempo',
-				value: 1,
-				min: 0.1,
-				max: 5,
-				step: 0.01
-			}
+	div.form-group
+		label(for=delay.id) #{delay.label}
+		input(
+			id=delay.id
+			type='number'
+			name=delay.id
+			placeholder=delay.label
+			value=delay.value
+			min=delay.min
+			max=delay.max
+			step=delay.step
+		).form-control
 
-			gain = {
-				id: 'gain',
-				label: 'Gain',
-				value: 1,
-				min: -50,
-				max: 50,
-				step: 0.1
-			}
+	div.form-group
+		label #{modifiers.label}
+		div.form-check
+			div.form-check-inline
+				label.form-check-label
+					input.form-check-input(
+						id=slowReading.id
+						type='checkbox'
+						name=slowReading.id
+					)
+					span #{slowReading.label}
 
-			delay = {
-				id: 'delay',
-				label: 'Delay',
-				value: 0,
-				min: 0,
-				max: 10,
-				step: 0.1
-			}
+			div.form-check-inline
+				label.form-check-label
+					input.form-check-input(
+						id=reverse.id
+						type='checkbox'
+						name=reverse.id
+					)
+					span #{reverse.label}
 
-			modifiers = {
-				label: 'Modifiers'
-			}
+			div.form-check-inline
+				label.form-check-label
+					input.form-check-input(
+						id=reverb.id
+						type='checkbox'
+						name=reverb.id
+					)
+					span #{reverb.label}
 
-			slowReading = {
-				id: 'slowReading',
-				label: 'Slow reading'
-			}
-
-			reverse = {
-				id: 'reverse',
-				label: 'Reverse'
-			}
-
-			reverb = {
-				id: 'reverb',
-				label: 'Reverb'
-			}
-
-			voices = [{
-				value: 'google_speech',
-				label: 'GoogleSpeech',
-				incompatibleSettings: [
-					voiceCode.id,
-					slowReading.id
-				]
-			},{
-				value: 'gtts',
-				label: 'gTTS',
-				incompatibleSettings: [
-					voiceCode.id
-				]
-			},{
-				value: 'festival',
-				label: 'Festival',
-				incompatibleSettings: [
-					voiceCode.id,
-					speed.id,
-					pitch.id,
-					tempo.id,
-					gain.id,
-					delay.id,
-					slowReading.id,
-					reverse.id,
-					reverb.id
-				]
-			},{
-				value: 'espeak',
-				label: 'eSpeak',
-				incompatibleSettings: [
-					slowReading.id
-				]
-			}]
-
-	body(onload=`onVoiceChange(${JSON.stringify(voices[0])})`)
-		div(
-			style='padding-top: 15px; padding-bottom: 15px'
-		).container
-			div.row
-				div.col-12
-					h1 TTS-API
-
-			div.row
-				div.col-12
-					form
-						div.form-group
-							label #{voice.label}
-							div.form-check
-								each voiceItem, index in voices
-									div.form-check-inline
-										label.form-check-label
-											input.form-check-input(
-												type='radio'
-												name=voice.name
-												value=voiceItem.value
-												checked=(!index ? true : false)
-												onchange=`onVoiceChange(${JSON.stringify(voiceItem)})`
-											)
-											span #{voiceItem.label}
-
-						div.form-group
-							label(for=text.id) #{text.label}
-							textarea(
-								id=text.id
-								type='text'
-								name=text.id
-								placeholder=text.label
-								autofocus
-								minlength=text.minLength
-								maxlength=text.maxLength
-								required
-							).form-control
-
-						div.form-group
-							label(for=language.id) #{language.label}
-							input(
-								id=language.id
-								type='text'
-								name=language.id
-								placeholder=language.label
-								value=language.value
-								minlength=language.minLength
-								maxlength=language.maxLength
-								required
-							).form-control
-
-						div.form-group
-							label(for=voiceCode.id) #{voiceCode.label}
-							input(
-								id=voiceCode.id
-								type='text'
-								name=voiceCode.id
-								placeholder=voiceCode.label
-								value=voiceCode.value
-								maxlength=voiceCode.maxLength
-							).form-control
-
-						div.form-group
-							label(for=speed.id) #{speed.label}
-							input(
-								id=speed.id
-								type='number'
-								name=speed.id
-								placeholder=speed.label
-								value=speed.value
-								min=speed.min
-								max=speed.max
-								step=speed.step
-							).form-control
-
-						div.form-group
-							label(for=pitch.id) #{pitch.label}
-							input(
-								id=pitch.id
-								type='number'
-								name=pitch.id
-								placeholder=pitch.label
-								value=pitch.value
-								min=pitch.min
-								max=pitch.max
-								step=pitch.step
-							).form-control
-
-						div.form-group
-							label(for=tempo.id) #{tempo.label}
-							input(
-								id=tempo.id
-								type='number'
-								name=tempo.id
-								placeholder=tempo.label
-								value=tempo.value
-								min=tempo.min
-								max=tempo.max
-								step=tempo.step
-							).form-control
-
-						div.form-group
-							label(for=gain.id) #{gain.label}
-							input(
-								id=gain.id
-								type='number'
-								name=gain.id
-								placeholder=gain.label
-								value=gain.value
-								min=gain.min
-								max=gain.max
-								step=gain.step
-							).form-control
-
-						div.form-group
-							label(for=delay.id) #{delay.label}
-							input(
-								id=delay.id
-								type='number'
-								name=delay.id
-								placeholder=delay.label
-								value=delay.value
-								min=delay.min
-								max=delay.max
-								step=delay.step
-							).form-control
-
-						div.form-group
-							label #{modifiers.label}
-							div.form-check
-								div.form-check-inline
-									label.form-check-label
-										input.form-check-input(
-											id=slowReading.id
-											type='checkbox'
-											name=slowReading.id
-										)
-										span #{slowReading.label}
-
-								div.form-check-inline
-									label.form-check-label
-										input.form-check-input(
-											id=reverse.id
-											type='checkbox'
-											name=reverse.id
-										)
-										span #{reverse.label}
-
-								div.form-check-inline
-									label.form-check-label
-										input.form-check-input(
-											id=reverb.id
-											type='checkbox'
-											name=reverb.id
-										)
-										span #{reverb.label}
-
-						button(
-							onclick='onSubmit(event)'
-						).btn.btn-primary
-							span Submit
+	button(
+		onclick='onSubmit(event)'
+	).btn.btn-primary
+		span Submit

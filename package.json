@@ -19,13 +19,13 @@
       "email": "pedroetb@gmail.com"
     }
   ],
-  "main": "app.js",
+  "main": "app",
   "repository": {
     "type": "git",
     "url": "https://github.com/pedroetb/tts-api.git"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app"
   },
   "dependencies": {
     "alertifyjs": "^1.11.4",
