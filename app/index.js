@@ -6,7 +6,7 @@ var util = require('util'),
 	cmd = require('./cmd'),
 
 	server = express(),
-	port = 3000;
+	port = process.env.PORT || 3000;
 
 server.set('view engine', 'pug')
 	.use(bodyParser.json())

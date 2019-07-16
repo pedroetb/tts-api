@@ -6,6 +6,7 @@ services:
     container_name: ${CONTAINER_NAME:-tts-api}
     environment:
       LC_ALL:
+      PORT:
     networks:
       tts-api-net:
     devices:
