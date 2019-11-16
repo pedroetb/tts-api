@@ -1,0 +1,6 @@
+:{$CADDY_PORT} {
+	proxy / {$CONTAINER_NAME}:{$PORT} {
+		transparent
+	}
+	tls off
+}

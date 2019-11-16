@@ -21,17 +21,13 @@ services:
         LIBSOX_FMT_MP3_VERSION:
         FESTVOX_ELLPC11K_VERSION:
         PORT:
-    container_name: ${CONTAINER_NAME:-tts-api}
+    container_name: ${CONTAINER_NAME}
     environment:
       PORT:
     networks:
       tts-api-net:
     devices:
       - ${AUDIO_DEVICE:-/dev/snd}
-    labels:
-      - ${CADDY_DOCKER_LABEL_PREFIX}.address=:${CADDY_PORT}
-      - ${CADDY_DOCKER_LABEL_PREFIX}.targetport=${PORT}
-      - ${CADDY_DOCKER_LABEL_PREFIX}.tls=off
     restart: always
 
 networks:

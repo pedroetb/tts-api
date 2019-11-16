@@ -2,14 +2,19 @@ version: '3.7'
 
 services:
   caddy:
-    image: ${IMAGE_NAME:-lucaslorentz/caddy-docker-proxy}:${IMAGE_TAG:-alpine}
+    image: ${IMAGE_NAME:-productionwentdown/caddy}:${IMAGE_TAG:-1.0.3}
     environment:
-      CADDY_DOCKER_LABEL_PREFIX:
+      CADDY_PORT:
+      CONTAINER_NAME:
+      PORT:
     networks:
       tts-api-net:
       traefik-net:
+    configs:
+      - source: caddyfile-config
+        target: /etc/Caddyfile
     volumes:
-      - ${EXT_DOCKER_SOCKET:-/var/run/docker.sock}:${INT_DOCKER_SOCKET:-/var/run/docker.sock}
+      - work-vol:/etc/.caddy
     deploy:
       mode: replicated
       replicas: ${REPLICAS:-1}
@@ -17,9 +22,6 @@ services:
         delay: ${RESTART_DELAY:-3s}
       update_config:
         delay: ${UPDATE_DELAY:-1m}
-      placement:
-        constraints:
-          - ${PLACEMENT_CONSTRAINT:-node.hostname == node}
       labels:
         traefik.http.routers.tts-api.entrypoints: ${TRAEFIK_ENTRYPOINT:-https}
         traefik.http.routers.tts-api.tls.certresolver: ${TRAEFIK_CERTRESOLVER:-default}
@@ -42,3 +44,12 @@ networks:
   traefik-net:
     name: ${TRAEFIK_NET_NAME:-traefik-net}
     external: true
+
+configs:
+  caddyfile-config:
+    name: ${CADDYFILE_CONFIG_NAME:-tts-api-caddyfile}
+    file: ./config/Caddyfile
+
+volumes:
+  work-vol:
+    name: ${WORK_VOL_NAME:-tts-api-work-vol}

@@ -49,14 +49,15 @@ The API will be running and accessible at `http://localhost:3000`.
 Alternatively, you can deploy it in a **Docker Swarm** cluster using `docker-compose` (install it first) and `docker swarm` (create Swarm cluster first):
 ```
 $ cd deploy
+
 # Deploy Caddy service
 $ env $(grep -v '^[#| ]' .env | xargs) \
 	TRAEFIK_DOMAIN=change.me \
-	PLACEMENT_CONSTRAINT='node.hostname == node' \
 	docker stack deploy \
 	-c docker-compose.caddy.yml \
 	tts-api
-# Deploy API-TTS container
+
+# Run TTS-API container
 $ docker-compose \
 	-f docker-compose.tts-api.yml \
 	-p tts-api \
@@ -65,11 +66,11 @@ $ docker-compose \
 
 The service is prepared to be reverse-proxied with **Traefik**, and accessible at `tts.${TRAEFIK_DOMAIN}` domain. How to run **Traefik** is not described here, check its [official site](https://traefik.io).
 
-The proxy needs a little help from **Caddy** (provided by [lucaslorentz/caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy) plugin for Docker), because Docker Swarm is not compatible with devices configuration (required to use sound capabilities), and Traefik cannot work with Docker containers and Docker Swarm services at once.
+The proxy needs a little help from **Caddy**, because Docker Swarm is not compatible with devices configuration (required to use sound capabilities) and Traefik cannot work with Docker containers and Docker Swarm services at once.
 
-Both, Docker container and service, must be running on the same host, to be able to communicate. `PLACEMENT_CONSTRAINT` environment variable is used at service to ensure that tasks are created always into same host. Check [service constraints documentation](https://docs.docker.com/engine/reference/commandline/service_create/#specify-service-constraints-constraint) to choose how to set it.
+Both, Docker container and service, can be running on different hosts, because they are able to communicate through a Docker network. Run `tts-api` Docker container on host which has speakers, so you can listen speech.
 
-Don't forget to edit `TRAEFIK_DOMAIN` and `PLACEMENT_CONSTRAINT` environment variables before deploying.
+Don't forget to edit `TRAEFIK_DOMAIN` environment variable before deploying.
 
 ## Usage
 
