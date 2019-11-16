@@ -50,7 +50,13 @@ COPY views/ ./views/
 
 RUN npm i
 
+ENV LC_ALL=C.UTF-8
+
 ARG PORT=3000
+ENV PORT=${PORT}
 EXPOSE ${PORT}
+
+HEALTHCHECK --interval=1m --timeout=30s --start-period=1m --retries=10 \
+	CMD wget --quiet --tries=1 --spider http://localhost:${PORT} || exit 1
 
 CMD ["node", "app"]

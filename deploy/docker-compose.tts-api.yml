@@ -3,20 +3,31 @@ version: '3.7'
 services:
   tts-api:
     image: ${IMAGE_NAME:-pedroetb/tts-api}:${IMAGE_TAG:-latest}
+    build:
+      context: ..
+      dockerfile: ${DOCKERFILE:-Dockerfile}
+      args:
+        NODE_IMAGE_TAG:
+        APT_REPOSITORY:
+        GOOGLE_SPEECH_VERSION:
+        GTTS_VERSION:
+        ESPEAK_VERSION:
+        FESTIVAL_VERSION:
+        PYTHON3_VERSION:
+        PYTHON3_PIP_VERSION:
+        PYTHON3_SETUPTOOLS_VERSION:
+        PYTHON3_WHEEL_VERSION:
+        SOX_VERSION:
+        LIBSOX_FMT_MP3_VERSION:
+        FESTVOX_ELLPC11K_VERSION:
+        PORT:
     container_name: ${CONTAINER_NAME:-tts-api}
     environment:
-      LC_ALL:
       PORT:
     networks:
       tts-api-net:
     devices:
       - ${AUDIO_DEVICE:-/dev/snd}
-    healthcheck:
-      test: wget --spider -q http://localhost:${PORT}
-      interval: ${HEALTHCHECK_INTERVAL:-30s}
-      timeout: ${HEALTHCHECK_TIMEOUT:-10s}
-      retries: ${HEALTHCHECK_RETRIES:-3}
-      start_period: ${HEALTHCHECK_START_PERIOD:-1m}
     labels:
       - ${CADDY_DOCKER_LABEL_PREFIX}.address=:${CADDY_PORT}
       - ${CADDY_DOCKER_LABEL_PREFIX}.targetport=${PORT}
