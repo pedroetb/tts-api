@@ -21,9 +21,10 @@ services:
         constraints:
           - ${PLACEMENT_CONSTRAINT:-node.hostname == node}
       labels:
-        traefik.frontend.rule: Host:${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}
-        traefik.backend: tts-api
-        traefik.port: '${CADDY_PORT}'
+        traefik.http.routers.tts-api.entrypoints: ${TRAEFIK_ENTRYPOINT:-https}
+        traefik.http.routers.tts-api.tls.certresolver: ${TRAEFIK_CERTRESOLVER:-default}
+        traefik.http.routers.tts-api.rule: Host(`${TRAEFIK_SUBDOMAIN:-tts}.${TRAEFIK_DOMAIN}`)
+        traefik.http.services.tts-api.loadbalancer.server.port: ${CADDY_PORT}
       resources:
         limits:
           cpus: '${RESOURCES_LIMITS_CPUS:-0.1}'
@@ -35,7 +36,7 @@ services:
 networks:
   tts-api-net:
     name: ${TTS_API_NET_NAME:-tts-api-net}
-    driver: overlay
+    driver: ${TTS_API_NET_DRIVER:-overlay}
     attachable: true
 
   traefik-net:
