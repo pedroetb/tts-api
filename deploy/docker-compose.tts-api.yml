@@ -32,5 +32,6 @@ services:
 
 networks:
   tts-api-net:
-    name: ${TTS_API_NET_NAME:-tts-api-net}
+    name: ${TTS_API_NET_NAME}
+    driver: ${TTS_API_NET_DRIVER}
     external: true

@@ -37,8 +37,8 @@ services:
 
 networks:
   tts-api-net:
-    name: ${TTS_API_NET_NAME:-tts-api-net}
-    driver: ${TTS_API_NET_DRIVER:-overlay}
+    name: ${TTS_API_NET_NAME}
+    driver: ${TTS_API_NET_DRIVER}
     attachable: true
 
   traefik-net:
