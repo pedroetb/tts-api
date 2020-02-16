@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   caddy:
-    image: ${IMAGE_NAME:-productionwentdown/caddy}:${IMAGE_TAG:-1.0.3}
+    image: ${CADDY_IMAGE_NAME:-productionwentdown/caddy}:${CADDY_IMAGE_TAG:-1.0.3}
     environment:
       CADDY_PORT:
       CONTAINER_NAME:

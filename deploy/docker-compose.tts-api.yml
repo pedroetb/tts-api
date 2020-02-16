@@ -2,9 +2,9 @@ version: '3.7'
 
 services:
   tts-api:
-    image: ${IMAGE_NAME:-pedroetb/tts-api}:${IMAGE_TAG:-latest}
+    image: ${TTS_API_IMAGE_NAME:-pedroetb/tts-api}:${TTS_API_IMAGE_TAG:-latest}
     build:
-      context: ..
+      context: ${BUILD_CONTEXT:-..}
       dockerfile: ${DOCKERFILE:-Dockerfile}
       args:
         NODE_IMAGE_TAG:

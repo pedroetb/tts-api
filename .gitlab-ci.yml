@@ -1,0 +1,63 @@
+include:
+  - project: 'pedroetb-projects/gitlab-ci-templates'
+    ref: master
+    file: '/packaging.yml'
+  - project: 'pedroetb-projects/gitlab-ci-templates'
+    ref: master
+    file: '/packaging-arm.yml'
+  - project: 'pedroetb-projects/gitlab-ci-templates'
+    ref: master
+    file: '/_deployment.yml'
+
+stages:
+  - pre-package
+  - package
+  - post-package
+  - deploy
+
+.docker-build:
+  variables:
+    COMPOSE_FILE_NAME: docker-compose.tts-api.yml
+    IMAGE_NAME_VARIABLE_NAME: TTS_API_IMAGE_NAME
+    IMAGE_TAG_VARIABLE_NAME: TTS_API_IMAGE_TAG
+
+.deploy-caddy:
+  extends: .deploy
+  variables:
+    COMPOSE_FILE: docker-compose.caddy.yml
+    SERVICES_TO_CHECK: ${CI_PROJECT_NAME}_caddy
+  environment:
+    url: https://tts.${DD_TRAEFIK_DOMAIN}
+
+.deploy-tts-api:
+  extends: .deploy
+  variables:
+    FORCE_DOCKER_COMPOSE: 1
+    COMPOSE_FILE: docker-compose.tts-api.yml
+    SERVICES_TO_CHECK: ${CI_PROJECT_NAME}
+
+.deploy-branch: &deploy-branch
+  only:
+    - branches
+  except:
+    - schedules
+
+.deploy-tag: &deploy-tag
+  only:
+    - tags
+
+deploy-caddy-branch:
+  extends: .deploy-caddy
+  <<: *deploy-branch
+
+deploy-tts-api-branch:
+  extends: .deploy-tts-api
+  <<: *deploy-branch
+
+deploy-caddy-tag:
+  extends: .deploy-caddy
+  <<: *deploy-tag
+
+deploy-tts-api-tag:
+  extends: .deploy-tts-api
+  <<: *deploy-tag
