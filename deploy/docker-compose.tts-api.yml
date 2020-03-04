@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2.4'
 
 services:
   tts-api:
@@ -29,6 +29,9 @@ services:
     devices:
       - ${AUDIO_DEVICE:-/dev/snd}
     restart: always
+    cpus: '${CPUS:-0.5}'
+    mem_limit: ${MEM_LIMIT:-64M}
+    mem_reservation: ${MEM_RESERVATION:-32M}
 
 networks:
   tts-api-net:
