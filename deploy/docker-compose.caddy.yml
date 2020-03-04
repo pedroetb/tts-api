@@ -23,6 +23,7 @@ services:
       update_config:
         delay: ${UPDATE_DELAY:-1m}
       labels:
+        traefik.enable: 'true'
         traefik.http.routers.tts-api.entrypoints: ${TRAEFIK_ENTRYPOINT:-https}
         traefik.http.routers.tts-api.tls.certresolver: ${TRAEFIK_CERTRESOLVER:-default}
         traefik.http.routers.tts-api.rule: Host(`${TRAEFIK_SUBDOMAIN:-tts}.${TRAEFIK_DOMAIN}`)
@@ -43,6 +44,7 @@ networks:
 
   traefik-net:
     name: ${TRAEFIK_NET_NAME:-traefik-net}
+    driver: ${TRAEFIK_NET_DRIVER:-overlay}
     external: true
 
 configs:
