@@ -103,8 +103,29 @@
 			slowReading.id
 		]
 	},{
+		value: 'google_speech_file',
+		label: 'GoogleSpeech (file)',
+		incompatibleSettings: [
+			voiceCode.id,
+			speed.id,
+			pitch.id,
+			tempo.id,
+			gain.id,
+			delay.id,
+			slowReading.id,
+			reverse.id,
+			reverb.id,
+			robot.id
+		]
+	},{
 		value: 'gtts',
 		label: 'gTTS',
+		incompatibleSettings: [
+			voiceCode.id
+		]
+	},{
+		value: 'gtts_file',
+		label: 'gTTS (file)',
 		incompatibleSettings: [
 			voiceCode.id
 		]
@@ -126,6 +147,12 @@
 	},{
 		value: 'espeak',
 		label: 'eSpeak',
+		incompatibleSettings: [
+			slowReading.id
+		]
+	},{
+		value: 'espeak_file',
+		label: 'eSpeak (file)',
 		incompatibleSettings: [
 			slowReading.id
 		]

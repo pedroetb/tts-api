@@ -52,7 +52,7 @@ function runLastSpeechProcess(cmdWithArgs, httpArgs) {
 
 	speechProcess.on('error', onLastSpeechError.bind(this, httpArgs));
 	speechProcess.on('close', onLastSpeechClose);
-	speechProcess.on('exit', onLastSpeechExit.bind(this, httpArgs));
+	speechProcess.on('exit', onLastSpeechExit.bind(this, cmdWithArgs, httpArgs));
 
 	return speechProcess;
 }
@@ -135,14 +135,19 @@ function onLastSpeechClose(code) {
 	}
 }
 
-function onLastSpeechExit(args, err) {
+function onLastSpeechExit(cmdWithArgs, httpArgs, err) {
 
-	var res = args.res;
+	var res = httpArgs.res,
+		filePath = cmdWithArgs.file;
 
 	if (!err) {
-		res.end();
+		if (filePath) {
+			res.download(filePath);
+		} else {
+			res.end();
+		}
 	} else {
-		handleSpeechError(args, err);
+		handleSpeechError(httpArgs, err);
 	}
 }
 

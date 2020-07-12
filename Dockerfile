@@ -43,6 +43,8 @@ RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 
 WORKDIR /tts-api
 
+RUN mkdir audio
+
 COPY package.json package-lock.json ./
 COPY app/ ./app/
 COPY js/ ./js/
