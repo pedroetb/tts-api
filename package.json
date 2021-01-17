@@ -1,6 +1,6 @@
 {
   "name": "tts-api",
-  "version": "2.4.1",
+  "version": "2.5.0",
   "description": "Text to speech REST API for multiple TTS engines",
   "keywords": [
     "text-to-speech",
