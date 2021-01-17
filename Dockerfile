@@ -31,7 +31,7 @@ RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 		festival=${FESTIVAL_VERSION} \
 		festvox-ellpc11k=${FESTVOX_ELLPC11K_VERSION} \
 		espeak=${ESPEAK_VERSION} && \
-	pip3 install \
+	pip3 install --no-cache-dir \
 		google_speech==${GOOGLE_SPEECH_VERSION} \
 		gTTS==${GTTS_VERSION} && \
 	apt-get remove --purge -y \
