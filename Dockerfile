@@ -4,24 +4,26 @@ FROM node:${NODE_IMAGE_TAG}
 
 LABEL maintainer="pedroetb@gmail.com"
 
-ARG APT_REPOSITORY="deb http://ftp.de.debian.org/debian stretch main non-free"
+ARG APT_REPOSITORY="deb http://ftp.de.debian.org/debian buster main non-free"
 
 ARG GOOGLE_SPEECH_VERSION=1.1.0
 ARG GTTS_VERSION=2.2.1
 ARG ESPEAK_VERSION=1.48.04+dfsg-7+deb10u1
 ARG FESTIVAL_VERSION=1:2.5.0-3
 
+ARG WGET_VERSION=1.20.1-1.1
 ARG PYTHON3_VERSION=3.7.3-1
 ARG PYTHON3_PIP_VERSION=18.1-5
 ARG PYTHON3_SETUPTOOLS_VERSION=40.8.0-1
 ARG PYTHON3_WHEEL_VERSION=0.32.3-2
 ARG SOX_VERSION=14.4.2+git20190427-1
 ARG LIBSOX_FMT_MP3_VERSION=14.4.2+git20190427-1
-ARG FESTVOX_ELLPC11K_VERSION=1.4.0-4
+ARG FESTVOX_ELLPC11K_VERSION=1.95-1
 
 RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 	apt-get update && \
 	apt-get install --no-install-recommends -y \
+		wget=${WGET_VERSION} \
 		python3=${PYTHON3_VERSION} \
 		python3-pip=${PYTHON3_PIP_VERSION} \
 		python3-setuptools=${PYTHON3_SETUPTOOLS_VERSION} \
