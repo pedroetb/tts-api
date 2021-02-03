@@ -20,6 +20,7 @@ ARG SOX_VERSION=14.4.2+git20190427-1
 ARG LIBSOX_FMT_MP3_VERSION=14.4.2+git20190427-1
 ARG FESTVOX_ELLPC11K_VERSION=1.95-1
 
+# hadolint ignore=DL3042
 RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 	apt-get update && \
 	apt-get install --no-install-recommends -y \
@@ -33,7 +34,7 @@ RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 		festival=${FESTIVAL_VERSION} \
 		festvox-ellpc11k=${FESTVOX_ELLPC11K_VERSION} \
 		espeak=${ESPEAK_VERSION} && \
-	pip3 install --no-cache-dir \
+	pip3 install \
 		google_speech==${GOOGLE_SPEECH_VERSION} \
 		gTTS==${GTTS_VERSION} && \
 	apt-get remove --purge -y \
