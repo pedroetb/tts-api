@@ -1,6 +1,14 @@
-:{$CADDY_PORT} {
-	proxy / {$CONTAINER_NAME}:{$PORT} {
-		transparent
+{
+	admin off
+	auto_https off
+	log {
+		format console {
+			time_format iso8601
+		}
 	}
-	tls off
+}
+
+:{$CADDY_PORT} {
+	reverse_proxy {$CONTAINER_NAME}:{$PORT}
+	respond /health "OK" 200
 }
