@@ -1,13 +1,13 @@
 include:
   - project: 'pedroetb-projects/gitlab-ci-templates'
     ref: master
-    file: '/packaging.yml'
+    file: '/packaging-docker/docker-build.yml'
   - project: 'pedroetb-projects/gitlab-ci-templates'
     ref: master
-    file: '/packaging-arm.yml'
+    file: '/deployment-service/custom-image.yml'
   - project: 'pedroetb-projects/gitlab-ci-templates'
     ref: master
-    file: '/deployment.yml'
+    file: '/deployment-service/lulu/docker-deploy.yml'
 
 stages:
   - pre-package
@@ -15,37 +15,34 @@ stages:
   - post-package
   - deploy
 
-.docker-build:
-  variables:
-    COMPOSE_FILE_NAME: docker-compose.tts-api.yml
-    IMAGE_NAME_VARIABLE_NAME: TTS_API_IMAGE_NAME
-    IMAGE_TAG_VARIABLE_NAME: TTS_API_IMAGE_TAG
-
 .deploy:
   variables:
     FORCE_DOCKER_COMPOSE: 1
-    COMPOSE_FILE: docker-compose.tts-api.yml
-    SERVICES_TO_CHECK: ${CI_PROJECT_NAME}
+    COMPOSE_FILE: compose.tts-api.yaml
+    SERVICES_TO_CHECK: tts-api
+
+.deploy-lulu:
   environment:
-    name: environment/tts-api
+    name: lulu/tts-api
 
 .deploy-caddy:
   variables: &deploy-caddy-variables
     FORCE_DOCKER_COMPOSE: 0
-    COMPOSE_FILE: docker-compose.caddy.yml
+    COMPOSE_FILE: compose.caddy.yaml
     SERVICES_TO_CHECK: ${CI_PROJECT_NAME}_caddy
-  environment: &deploy-caddy-environment
-    name: environment/caddy
-    url: https://tts.${DD_TRAEFIK_DOMAIN}
 
-deploy-caddy-branch:
-  extends: deploy-branch
+.deploy-lulu-caddy:
+  environment: &deploy-lulu-caddy-environment
+    name: lulu/caddy
+
+deploy-branch-lulu-caddy:
+  extends: deploy-branch-lulu
   variables:
     <<: *deploy-caddy-variables
-  environment: *deploy-caddy-environment
+  environment: *deploy-lulu-caddy-environment
 
-deploy-caddy-tag:
-  extends: deploy-tag
+deploy-tag-lulu-caddy:
+  extends: deploy-tag-lulu
   variables:
     <<: *deploy-caddy-variables
-  environment: *deploy-caddy-environment
+  environment: *deploy-lulu-caddy-environment
