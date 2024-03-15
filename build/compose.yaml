@@ -17,7 +17,6 @@ services:
         PYTHON3_SETUPTOOLS_VERSION:
         PYTHON3_WHEEL_VERSION:
         SOX_VERSION:
-        LIBSOX_FMT_MP3_VERSION:
         FESTVOX_ELLPC11K_VERSION:
         PORT:
       platforms:

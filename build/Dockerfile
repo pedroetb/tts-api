@@ -15,26 +15,36 @@ ARG APT_REPOSITORY \
 	PYTHON3_SETUPTOOLS_VERSION \
 	PYTHON3_WHEEL_VERSION \
 	SOX_VERSION \
-	LIBSOX_FMT_MP3_VERSION \
 	FESTVOX_ELLPC11K_VERSION
 
 # hadolint ignore=DL3042
 RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 	apt-get update && \
+	apt-cache madison \
+		wget \
+		python3-dev \
+		python3-pip \
+		python3-setuptools \
+		python3-wheel \
+		sox \
+		libsox-fmt-mp3 \
+		festival \
+		festvox-ellpc11k \
+		espeak && \
 	apt-get install --no-install-recommends -y \
-		wget=${WGET_VERSION} \
-		python3=${PYTHON3_VERSION} \
-		python3-pip=${PYTHON3_PIP_VERSION} \
-		python3-setuptools=${PYTHON3_SETUPTOOLS_VERSION} \
-		python3-wheel=${PYTHON3_WHEEL_VERSION} \
-		sox=${SOX_VERSION} \
-		libsox-fmt-mp3=${LIBSOX_FMT_MP3_VERSION} \
-		festival=${FESTIVAL_VERSION} \
-		festvox-ellpc11k=${FESTVOX_ELLPC11K_VERSION} \
-		espeak=${ESPEAK_VERSION} && \
-	pip3 install \
-		google_speech==${GOOGLE_SPEECH_VERSION} \
-		gTTS==${GTTS_VERSION} && \
+		wget="${WGET_VERSION}" \
+		python3="${PYTHON3_VERSION}" \
+		python3-pip="${PYTHON3_PIP_VERSION}" \
+		python3-setuptools="${PYTHON3_SETUPTOOLS_VERSION}" \
+		python3-wheel="${PYTHON3_WHEEL_VERSION}" \
+		sox="${SOX_VERSION}" \
+		libsox-fmt-mp3="${SOX_VERSION}" \
+		festival="${FESTIVAL_VERSION}" \
+		festvox-ellpc11k="${FESTVOX_ELLPC11K_VERSION}" \
+		espeak="${ESPEAK_VERSION}" && \
+	pip3 install --break-system-packages \
+		google_speech=="${GOOGLE_SPEECH_VERSION}" \
+		gTTS=="${GTTS_VERSION}" && \
 	apt-get remove --purge -y \
 		python3-pip \
 		python3-setuptools \
