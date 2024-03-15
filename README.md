@@ -2,6 +2,9 @@
 
 Text to speech REST API for multiple TTS engines.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/-Sponsor-fafbfc?logo=GitHub%20Sponsors)](https://github.com/sponsors/pedroetb)
+
 You can send a text to be converted into audio, using different TTS engines and sound effects. Then, you will be listening to it on your local audio device, or receiving the resultant audio file.
 
 ## Setup
@@ -144,3 +147,9 @@ eSpeak is a compact open source software speech synthesizer for English and othe
 It works offline.
 
 Learn more at <http://espeak.sourceforge.net/>
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+This project is released under the [MIT License](LICENSE).
