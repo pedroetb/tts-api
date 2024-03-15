@@ -1,8 +1,6 @@
-version: '3.7'
-
 services:
   caddy:
-    image: ${CADDY_IMAGE_NAME:-productionwentdown/caddy}:${CADDY_IMAGE_TAG:-1.0.3}
+    image: ${CADDY_IMAGE_NAME:-caddy}:${CADDY_IMAGE_TAG:-latest}
     environment:
       CADDY_PORT:
       CONTAINER_NAME:
@@ -13,19 +11,16 @@ services:
     configs:
       - source: caddyfile-config
         target: /etc/Caddyfile
-    volumes:
-      - work-vol:/etc/.caddy
     deploy:
       mode: replicated
       replicas: ${REPLICAS:-1}
       restart_policy:
         delay: ${RESTART_DELAY:-3s}
       update_config:
-        delay: ${UPDATE_DELAY:-1m}
+        delay: ${UPDATE_DELAY:-30s}
       labels:
-        traefik.enable: 'true'
+        traefik.enable: ${TRAEFIK_ENABLE:-true}
         traefik.http.routers.tts-api.entrypoints: ${TRAEFIK_ENTRYPOINT:-https}
-        traefik.http.routers.tts-api.tls.certresolver: ${TRAEFIK_CERTRESOLVER:-default}
         traefik.http.routers.tts-api.rule: Host(`${TRAEFIK_SUBDOMAIN:-tts}.${TRAEFIK_DOMAIN}`)
         traefik.http.services.tts-api.loadbalancer.server.port: ${CADDY_PORT}
       resources:
@@ -51,7 +46,3 @@ configs:
   caddyfile-config:
     name: ${CADDYFILE_CONFIG_NAME:-tts-api-caddyfile}
     file: ./config/Caddyfile
-
-volumes:
-  work-vol:
-    name: ${WORK_VOL_NAME:-tts-api-work-vol}
