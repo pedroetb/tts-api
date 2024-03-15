@@ -52,7 +52,7 @@ docker run --rm -d --name tts-api --device /dev/snd -p 3000:3000 pedroetb/tts-ap
 
 The API will be running and accessible at `http://localhost:3000`.
 
-Alternatively, you can deploy it in a **Docker Swarm** cluster using `docker-compose` (install it first) and `docker swarm` (create Swarm cluster first):
+Alternatively, you can deploy it in a **Docker Swarm** cluster using `docker compose` (already included in Docker if using modern version) and `docker swarm` (create Swarm cluster first):
 
 ```sh
 cd deploy
@@ -61,21 +61,21 @@ cd deploy
 env $(grep -v '^[#| ]' .env | xargs) \
  TRAEFIK_DOMAIN=change.me \
  docker stack deploy \
- -c docker-compose.caddy.yml \
+ -c compose.caddy.yaml \
  tts-api
 
 # Run TTS-API container
-docker-compose \
- -f docker-compose.tts-api.yml \
+docker compose \
+ -f compose.tts-api.yaml \
  -p tts-api \
  up -d
 ```
 
 The service is prepared to be reverse-proxied with **Traefik**, and accessible at `tts.${TRAEFIK_DOMAIN}` domain. How to run **Traefik** is not described here, check its [official site](https://traefik.io).
 
-The proxy needs a little help from **Caddy**, because Docker Swarm is not compatible with devices configuration (required to use sound capabilities) and Traefik cannot work with Docker containers and Docker Swarm services at once.
+The proxy needs a little help from **Caddy**, because Docker Swarm is not compatible with devices configuration (required to use sound capabilities) and Traefik cannot work with Docker containers and Docker Swarm services all at once. This way, only **Caddy** service is exposed using **Traefik** and `tts-api` container is only accessible through reverse-proxy provided by **Caddy** (same way **Traefik** is reverse-proxing to **Caddy**).
 
-Both, Docker container and service, can be running on different hosts, because they are able to communicate through a Docker network. Run `tts-api` Docker container on host which has speakers, so you can listen speech.
+Both, Docker container and service, can be running on different hosts, because they are able to communicate through a Docker overlay network. Run `tts-api` Docker container on host which has speakers, so you can listen speech.
 
 Don't forget to edit `TRAEFIK_DOMAIN` environment variable before deploying.
 
