@@ -1,6 +1,6 @@
 {
   "name": "tts-api",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "description": "Text to speech REST API for multiple TTS engines",
   "keywords": [
     "text-to-speech",
@@ -34,7 +34,11 @@
     "express": "^4.18.3",
     "pug": "^3.0.2"
   },
-  "files": ["app", "views", "js"],
+  "files": [
+    "app",
+    "views",
+    "js"
+  ],
   "engines": {
     "node": ">=18.19.1",
     "npm": ">=10.2.4"
