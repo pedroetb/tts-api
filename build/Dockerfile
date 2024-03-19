@@ -44,7 +44,7 @@ RUN apt-get update && \
 		festvox-ellpc11k && \
 	apt-get install --no-install-recommends -y \
 		festvox-ellpc11k="${FESTVOX_ELLPC11K_VERSION}" && \
-	pip3 install --break-system-packages \
+	pip3 install --no-cache-dir --break-system-packages \
 		google-speech=="${GOOGLE_SPEECH_VERSION}" \
 		gTTS=="${GTTS_VERSION}" && \
 	apt-get remove --purge -y \
