@@ -17,19 +17,16 @@ ARG APT_REPOSITORY \
 	SOX_VERSION \
 	FESTVOX_ELLPC11K_VERSION
 
-# hadolint ignore=DL3042
-RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
-	apt-get update && \
+RUN apt-get update && \
 	apt-cache madison \
 		wget \
-		python3-dev \
+		python3 \
 		python3-pip \
 		python3-setuptools \
 		python3-wheel \
 		sox \
 		libsox-fmt-mp3 \
 		festival \
-		festvox-ellpc11k \
 		espeak && \
 	apt-get install --no-install-recommends -y \
 		wget="${WGET_VERSION}" \
@@ -40,8 +37,13 @@ RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 		sox="${SOX_VERSION}" \
 		libsox-fmt-mp3="${SOX_VERSION}" \
 		festival="${FESTIVAL_VERSION}" \
-		festvox-ellpc11k="${FESTVOX_ELLPC11K_VERSION}" \
 		espeak="${ESPEAK_VERSION}" && \
+	echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
+	apt-get update && \
+	apt-cache madison \
+		festvox-ellpc11k && \
+	apt-get install --no-install-recommends -y \
+		festvox-ellpc11k="${FESTVOX_ELLPC11K_VERSION}" && \
 	pip3 install --break-system-packages \
 		google-speech=="${GOOGLE_SPEECH_VERSION}" \
 		gTTS=="${GTTS_VERSION}" && \
