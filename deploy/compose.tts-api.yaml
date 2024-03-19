@@ -1,6 +1,6 @@
 services:
   tts-api:
-    image: ${TTS_API_IMAGE_NAME:-pedroetb/tts-api}:${TTS_API_IMAGE_TAG:-latest}
+    image: ${IMAGE_NAME:-pedroetb/tts-api}:${IMAGE_TAG:-latest}
     container_name: ${CONTAINER_NAME}
     environment:
       PORT:
