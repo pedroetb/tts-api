@@ -10,7 +10,7 @@ jobs:
     - name: Mirror + trigger CI
       uses: SvanBoxel/gitlab-mirror-and-ci-action@master
       with:
-        args: "https://gitlab.com/pedroetb-projects/tts-api"
+        args: "https://gitlab.com/pedroetb-projects/tts-api.git/"
       env:
         FOLLOW_TAGS: "true"
         FORCE_PUSH: "false"
