@@ -43,7 +43,7 @@ RUN echo ${APT_REPOSITORY} >> /etc/apt/sources.list && \
 		festvox-ellpc11k="${FESTVOX_ELLPC11K_VERSION}" \
 		espeak="${ESPEAK_VERSION}" && \
 	pip3 install --break-system-packages \
-		google_speech=="${GOOGLE_SPEECH_VERSION}" \
+		google-speech=="${GOOGLE_SPEECH_VERSION}" \
 		gTTS=="${GTTS_VERSION}" && \
 	apt-get remove --purge -y \
 		python3-pip \
